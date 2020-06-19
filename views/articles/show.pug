@@ -1,0 +1,11 @@
+extends ../layout
+
+block content
+    div(class="container")
+        div(class="jumbotron" style='margin-top: 20px;')
+            h1 #{model.title}
+            hr
+            p(class="article_author") #{model.author}
+            span(class="article_timestamp_label") #{model.created_at}
+            hr
+            textarea(class="article_display" rows="10" readonly) #{model.content}
