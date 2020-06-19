@@ -1,0 +1,21 @@
+doctype html
+html
+  head
+    title= title
+    script(src="/javascripts/jquery.js")
+    script(src="/javascripts/bootstrap.min.js")
+    script(src="/javascripts/bootstrap.bundle.min.js")
+    link(rel='stylesheet', href='/stylesheets/style.scss')
+    link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
+  body
+    nav(class='navbar navbar-expand-lg navbar-light bg-light')
+      div(class='collapse navbar-collapse')
+        ul(class='navbar-nav mr-auto')
+          li(class='nav-item')
+            a(class='nav-link' href='/') Home
+          li(class='nav-item')
+            a(class='nav-link' href='/articles') Articles
+    block content
+  footer
+    hr
+    p Author: Yongqian Huang
