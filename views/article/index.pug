@@ -1,9 +1,0 @@
-extends ../layout
-
-block content
-    a(href='articles/add') Create an article
-    ul
-        each article, i in articles
-            li= article.title
-            p= article.author
-            p= article.content

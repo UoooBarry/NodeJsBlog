@@ -13,6 +13,10 @@ let articleSchema = mongoose.Schema({
     content:{
         type: String,
         required: true
+    },
+    created_at:{
+        type: Date,
+        required: true
     }
 });
 
