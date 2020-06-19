@@ -1,0 +1,16 @@
+extends ../layout
+
+block content
+    h1 #{title}
+    form(method='post', action='/articles/add')
+        #form-group
+            label Title:
+            input(class='form-control', name='title', type='text')
+        #form-group
+            label Author:
+            input(class='form-control', name='author', type='text')
+        #form-group
+            label Content:
+            textarea(class='form-control', name='content', rows=10)
+        div(class="submit_btn_group")
+            button(type='submit' class='btn btn-primary') Submit
