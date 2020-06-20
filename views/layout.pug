@@ -15,8 +15,10 @@ html
             a(class='nav-link' href='/') Home
           li(class='nav-item')
             a(class='nav-link' href='/articles') Articles
-        a(class='nav-link' href='/register') Register
-    block content
+        a(class='nav-item' href='/register') Register
+    div(class="container" style="padding-top: 5px")
+      != messages('shared/message', locals)
+      block content
 
   div(class="row")
     footer

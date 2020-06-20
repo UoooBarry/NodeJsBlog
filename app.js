@@ -12,6 +12,27 @@ var db = require('./config/database');
 
 var app = express();
 
+var expressValidator = require('express-validator');
+var session = require('express-session');
+var flash = require('connect-flash');
+var cookieParser = require('cookie-parser')
+
+app.use(cookieParser());
+//Enable session
+app.use(session({
+  secret: 'keyboard cat',
+  resave: true,
+  saveUninitialized: true
+}));
+
+//Enable messages
+app.use(flash());
+app.use(function (req, res, next) {
+  res.locals.messages = require('express-messages')(req, res);
+  next();
+});
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -25,6 +46,9 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/articles', articlesRounter);
 
+
+
+//Enable validator
 
 //catch database connection
 db.once('open',function(){

@@ -33,12 +33,10 @@ router.post('/add', function(req, res){
             console.log(err);
             return;
         }else{
+            req.flash('success','Article Added');
             res.redirect('/articles');
         }
     })
-
-
-    console.log(req.body.title);
 });
 
 router.get('/:article_id/', function(req,res){
