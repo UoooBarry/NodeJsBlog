@@ -12,7 +12,6 @@ var db = require('./config/database');
 
 var app = express();
 
-var expressValidator = require('express-validator');
 var session = require('express-session');
 var flash = require('connect-flash');
 var cookieParser = require('cookie-parser')

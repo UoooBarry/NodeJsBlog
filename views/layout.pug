@@ -18,6 +18,9 @@ html
         a(class='nav-item' href='/register') Register
     div(class="container" style="padding-top: 5px")
       != messages('shared/message', locals)
+      if (errors)
+        each error, i in errors
+          div(class="alert alert-danger") #{error.msg}
       block content
 
   div(class="row")

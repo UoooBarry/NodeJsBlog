@@ -3,6 +3,8 @@ var router = express.Router();
 var User = require('../models/user');
 var Login = require('../models/login');
 var passwordHash = require('password-hash');
+const { check,validationResult } = require('express-validator');
+const user = require('../models/user');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -17,33 +19,36 @@ router.get('/register', function(req, res){
 });
 
 //POST /register
-router.post('/register',function(req,res){
-  var user = new User();
+router.post('/register',
+[
+  check('name').not().isEmpty().withMessage('Name cannot be empty'),
+  check('contact').isLength({min:10, max:10}).withMessage('Contact number should be 10 digits')
+  .matches(/^[0][0-9]$/).withMessage('Contact must be numbers start with 0'),
+  check('password').isLength({min: 6}).withMessage('Password need to be more than 10 digits')
+]
+,function(req,res){
+  errors = validationResult(req);
+  if(errors){
+    res.render('users/new',{
+      title: "Register",
+      errors: errors.mapped()
+  })}
   //create user
-  user.name = req.body.name;
-  user.gender = req.body.gender;
-  user.contact = req.body.contact;
-  //save user
-  user.save(function(err){
-    if(err){
-      console.log(err);
-      return;
-    }
+  var user = User.create({
+    name: req.body.name,
+    gender: req.body.gender,
+    contact: req.body.contact
   });
+
   //create login
-  var login = new Login();
-  login.user = user._id;
-  login.password = passwordHash.generate(req.body.password);
-  //save login
-  login.save(function(err){
-    if(err){
-      console.log(err);
-      return;
-  }else{
-      res.redirect('/');
-      console.log("One more user has come to our web application");
-  }
-});
+  Login.create({
+    user: user._id,
+    password: passwordHash.generate(req.body.password)
+  });
+  
+  req.flash('sucess', 'Successfully registered!')
+  res.redirect('/');
+  
 
 });
 

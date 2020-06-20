@@ -1,7 +1,7 @@
 let Article = require('../models/article');
 var express = require('express');
 var router = express.Router();
-
+const { check,validationResult } = require('express-validator');
 
 
 //Get articles
@@ -15,28 +15,32 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/add', function(req, res, next){
-    res.render('articles/add',{
+    res.render('articles/new',{
         title: "Add an article"
     })
 });
 
-router.post('/add', function(req, res){
-    var article = new Article();
-
-    article.title = req.body.title;
-    article.author = req.body.author;
-    article.content = req.body.content;
-    article.created_at = new Date();
-
-    article.save(function(err){
+router.post('/add', [
+    check('title').not().isEmpty().withMessage('Title cannot be empty'), 
+    check('author').not().isEmpty().withMessage('Author cannot be empty'),
+    check('content').not().isEmpty().withMessage('Content cannot be empty')
+] ,function(req, res){
+     Article.create({
+        title: req.body.title,
+        author: req.body.author,
+        content: req.body.content,
+        created_at: new Date()
+    }, function(err){
         if(err){
-            console.log(err);
-            return;
+            res.render('articles/new',{
+                title: "Add an article",
+                errors: validationResult(req).mapped()
+            });
         }else{
             req.flash('success','Article Added');
             res.redirect('/articles');
         }
-    })
+    });
 });
 
 router.get('/:article_id/', function(req,res){
