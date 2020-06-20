@@ -23,7 +23,7 @@ router.post('/register',
 [
   check('name').not().isEmpty().withMessage('Name cannot be empty'),
   check('contact').isLength({min:10, max:10}).withMessage('Contact number should be 10 digits')
-  .matches(/^[0][0-9]$/).withMessage('Contact must be numbers start with 0'),
+  .matches(/^[0][0-9]*$/).withMessage('Contact must be numbers start with 0'),
   check('password').isLength({min: 6}).withMessage('Password need to be more than 10 digits')
 ]
 ,function(req,res){
