@@ -7,7 +7,7 @@ const DBNAME = 'nodejs'
 const url = `mongodb://${DBHOST}:${DBPORT}/${DBNAME}`
 
 
-mongoose.connect(url, {useNewUrlParser: true});
+mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology: true});
 
 let db = mongoose.connection;
 
