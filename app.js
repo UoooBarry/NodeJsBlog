@@ -21,8 +21,15 @@ app.use(cookieParser());
 app.use(session({
   secret: 'keyboard cat',
   resave: true,
-  saveUninitialized: true
+  saveUninitialized: true,
+  cookie: {}
 }));
+
+//secure cookie in prod env
+if (app.get('env') === 'production') {
+  app.set('trust proxy', 1) // trust first proxy
+  sess.cookie.secure = true // serve secure cookies
+}
 
 //Enable messages
 app.use(flash());
