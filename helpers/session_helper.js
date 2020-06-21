@@ -7,3 +7,7 @@ exports.log_in = function (user){
 exports.current_user = function(){
     return session.current_user;
 }
+
+exports.log_out = function () {
+    session.current_user = null;
+}

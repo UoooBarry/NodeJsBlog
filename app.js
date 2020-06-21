@@ -52,7 +52,8 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/articles', articlesRounter);
 
-
+//Pass helper to view
+app.locals.session_helper = require('./helpers/session_helper');
 
 //Enable validator
 
