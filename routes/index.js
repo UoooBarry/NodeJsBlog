@@ -3,8 +3,7 @@ var router = express.Router();
 var User = require('../models/user');
 var passwordHash = require('password-hash');
 const { check,validationResult } = require('express-validator');
-const user = require('../models/user');
-const e = require('express');
+const session_helper = require('../helpers/session_helper');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -69,12 +68,21 @@ User.findOne({ name: name}, function(err, user){
     }
     var hash = user.login.password;
     if(passwordHash.verify(req.body.password,hash)){
-      console.log("true");
+      session_helper.log_in(user);
+      req.flash('success', 'Login success.');
+      res.redirect('/articles');
     }else{
       req.flash('danger','Login information not match!');
       res.redirect('/signin');
     }
   });
+
+});
+
+router.get('/signout', function(req,res){
+  session_helper.log_out();
+  req.flash('success', 'Logout success.');
+  res.redirect('/');
 });
 
 

@@ -21,8 +21,15 @@ app.use(cookieParser());
 app.use(session({
   secret: 'keyboard cat',
   resave: true,
-  saveUninitialized: true
+  saveUninitialized: true,
+  cookie: {}
 }));
+
+//secure cookie in prod env
+if (app.get('env') === 'production') {
+  app.set('trust proxy', 1) // trust first proxy
+  sess.cookie.secure = true // serve secure cookies
+}
 
 //Enable messages
 app.use(flash());
@@ -45,7 +52,8 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/articles', articlesRounter);
 
-
+//Pass helper to view
+app.locals.session_helper = require('./helpers/session_helper');
 
 //Enable validator
 
