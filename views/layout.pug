@@ -16,9 +16,10 @@ html
           li(class='nav-item')
             a(class='nav-link' href='/articles') Articles
         if session_helper.current_user()
+          a(class='nav-link') #{session_helper.get_name()}
           a(class='nav-item' href='/signout') Sign out
         else
-          a(class='nav-link' href='/Signin') Sign in
+          a(class='nav-link' href='/signin') Sign in
           a(class='nav-link' href='/register') Register
         
     div(class="container" style="padding-top: 5px")

@@ -2,7 +2,7 @@ let Article = require('../models/article');
 var express = require('express');
 var router = express.Router();
 const { check,validationResult } = require('express-validator');
-
+const session_helper = require('../helpers/session_helper');
 
 //Get articles
 router.get('/', function(req, res, next) {
@@ -15,32 +15,45 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/add', function(req, res, next){
+    session_helper.log_in_check(req,res);
     res.render('articles/new',{
-        title: "Add an article"
-    })
+            title: "Add an article"
+    });
+    
 });
 
 router.post('/add', [
     check('title').not().isEmpty().withMessage('Title cannot be empty'), 
-    check('author').not().isEmpty().withMessage('Author cannot be empty'),
+    check('author').custom(function(value, {req}){
+        if(value !== session_helper.get_name()){
+            throw new Error("Incorrect user");
+        }else{
+            return value;
+        }
+     }),
     check('content').not().isEmpty().withMessage('Content cannot be empty')
 ] ,function(req, res){
-     Article.create({
-        title: req.body.title,
-        author: req.body.author,
-        content: req.body.content,
-        created_at: new Date()
-    }, function(err){
-        if(err){
-            res.render('articles/new',{
-                title: "Add an article",
-                errors: validationResult(req).mapped()
-            });
-        }else{
-            req.flash('success','Article Added');
-            res.redirect('/articles');
-        }
-    });
+     session_helper.log_in_check(req,res);
+     var errors = validationResult(req);
+
+     if(!errors.isEmpty()){
+        res.render('articles/new',{
+            title: "Add an article",
+            errors: errors.mapped()
+        });
+     }else{
+        Article.create({
+            title: req.body.title,
+            author: req.body.author,
+            content: req.body.content,
+            created_at: new Date()
+        }, function(err){
+            if(!err){
+                req.flash('success','Article Added');
+                res.redirect('/articles');
+            }
+        });
+    }
 });
 
 router.get('/:article_id/', function(req,res){

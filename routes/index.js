@@ -56,15 +56,14 @@ router.get('/signin',function(req,res){
 router.post('/signin',function(req,res){
   var name = req.body.name;
   if(!name){
-    req.flash('danger','Login information not match!');
-    res.redirect('/signin');
+    log_fail(req,res);
     return;
   }
 
 User.findOne({ name: name}, function(err, user){
     if(!user){
-      req.flash('danger','Login information not match!');
-      res.redirect('/signin');
+      log_fail(req,res);
+      return;
     }
     var hash = user.login.password;
     if(passwordHash.verify(req.body.password,hash)){
@@ -72,8 +71,8 @@ User.findOne({ name: name}, function(err, user){
       req.flash('success', 'Login success.');
       res.redirect('/articles');
     }else{
-      req.flash('danger','Login information not match!');
-      res.redirect('/signin');
+      log_fail(req,res);
+      return;
     }
   });
 
@@ -85,5 +84,9 @@ router.get('/signout', function(req,res){
   res.redirect('/');
 });
 
+function log_fail(req,res){
+  req.flash('danger','Login information not match!');
+  res.redirect('/signin');
+}
 
 module.exports = router;

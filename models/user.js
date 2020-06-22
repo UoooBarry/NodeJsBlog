@@ -26,4 +26,5 @@ let userSchema = mongoose.Schema({
     login: loginSchema
 });
 
+
 module.exports = mongoose.model('User', userSchema);
