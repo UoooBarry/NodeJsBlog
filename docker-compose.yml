@@ -1,0 +1,19 @@
+version: '3.4'
+
+services:
+  app:
+    container_name: docker-node-app
+    build: .
+    environment:
+      DBNAME: 'docker-node-app'
+      DBPORT: '27017'
+    ports:
+      - '3000:3000'
+    links:
+      - mongo # link this service to the database service
+  mongo:
+    container_name: mongo
+    image: mongo
+    restart: always
+    ports:
+      - '27017:27017'

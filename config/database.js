@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
-const DBHOST = 'localhost'
-const DBPORT = '27017'
-const DBNAME = 'nodejs'
+const DBHOST = 'mongo';
+const DBPORT = process.env.DBPORT;
+const DBNAME = process.env.DBNAME;
 
 const url = `mongodb://${DBHOST}:${DBPORT}/${DBNAME}`
 
