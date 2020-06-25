@@ -4,7 +4,7 @@ block content
     h1 #{title}
     form(method='post', action='/register')
         #form-group
-            label Name:
+            label UserName:
             input(class="form-control" name="name", type="text")
         #form-group
             label Gender:
@@ -18,5 +18,8 @@ block content
         #form-group
             label Password:
             input(class="form-control" name="password", type="password")
+        #form-group
+            label Confirm password:
+            input(class="form-control" name="confirm_password", type="password")
         div(class="submit_btn_group")
             button(type='submit' class='btn btn-primary') Submit
