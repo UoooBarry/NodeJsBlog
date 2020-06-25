@@ -7,6 +7,7 @@
     "mon": "nodemon"
   },
   "dependencies": {
+    "ajax": "0.0.4",
     "bootstrap": "^4.5.0",
     "clean-css": "^4.2.3",
     "connect-flash": "^0.1.1",

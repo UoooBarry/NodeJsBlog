@@ -5,6 +5,7 @@ html
     script(src="/javascripts/jquery.js")
     script(src="/javascripts/bootstrap.min.js")
     script(src="/javascripts/bootstrap.bundle.min.js")
+    script(src="/javascripts/main.js")
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
   body
@@ -16,7 +17,7 @@ html
           li(class='nav-item')
             a(class='nav-link' href='/articles') Articles
         if session_helper.current_user()
-          li(class="dropdown" style="list-style-type:none")
+          li(class="dropdown" style="list-style-type:none;padding-right: 5px; cursor:pointer;")
             a(class="dropdown-toggle" data-toggle="dropdown") #{session_helper.get_name()} <b class="caret"></b>
             ul(class='dropdown-menu')
               a(class='nav-item' href='/signout') Sign out

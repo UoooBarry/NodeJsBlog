@@ -6,5 +6,6 @@ block content
         hr
         p(class="article_author") #{model.author}
         span(class="article_timestamp_label") #{model.created_at}
+        a(class="article_author" href="#" data-id=model._id id="delete_article") delete
         hr
         textarea(class="article_display" rows="10" readonly) #{model.content}

@@ -56,6 +56,13 @@ router.post('/add', [
     }
 });
 
+router.delete('/:id/', function(req,res){
+    Article.findOneAndDelete({_id : req.params.id},function(err){
+        req.flash('success','Article removed');
+        res.send('Success');
+    })
+});
+
 router.get('/:article_id/', function(req,res){
     Article.findById(req.params.article_id, function(err, article){
         res.render('articles/show',{
