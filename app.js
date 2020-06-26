@@ -57,8 +57,6 @@ app.use('/articles', articlesRounter);
 //Pass helper to view
 app.locals.session_helper = require('./helpers/session_helper');
 
-//Enable validator
-
 //catch database connection
 db.once('open',function(){
   console.log("Database connected successfully.");

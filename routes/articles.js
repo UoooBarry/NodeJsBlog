@@ -6,10 +6,12 @@ const session_helper = require('../helpers/session_helper');
 
 //Get articles
 router.get('/', function(req, res, next) {
-    Article.find({},function(err, articles){
+    Article.find({}).then( (articles)=>{
         res.render('articles/index',{
             title:'Articles',
             articles: articles
+        }).catch( (err) =>{
+            console.log(err);
         })
     })
 });
@@ -47,11 +49,14 @@ router.post('/add', [
             author: req.body.author,
             content: req.body.content,
             created_at: new Date()
-        }, function(err){
-            if(!err){
-                req.flash('success','Article Added');
-                res.redirect('/articles');
-            }
+        })
+        .then( (document) => {
+            req.flash('success','Article: ' + document.title + ' is added');
+            res.redirect('/articles');
+        })
+        .catch( (err)=> {
+            req.flash('danger', err);
+            res.redirect('/articles');
         });
     }
 });
