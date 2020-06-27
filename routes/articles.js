@@ -6,14 +6,17 @@ const session_helper = require('../helpers/session_helper');
 
 //Get articles
 router.get('/', function(req, res, next) {
-    Article.find({}).then( (articles)=>{
+    Article.find({})
+        .exec()
+        .then( (articles)=>{
         res.render('articles/index',{
             title:'Articles',
             articles: articles
-        }).catch( (err) =>{
+        })
+        .catch( (err) =>{
             console.log(err);
         })
-    })
+    });
 });
 
 router.get('/add', function(req, res, next){
