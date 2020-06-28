@@ -3,6 +3,7 @@ var express = require('express');
 var router = express.Router();
 const { check,validationResult } = require('express-validator');
 const session_helper = require('../helpers/session_helper');
+const accountAPI = require('../services/account');
 
 //Get articles
 router.get('/', function(req, res, next) {
@@ -30,7 +31,7 @@ router.get('/add', function(req, res, next){
 router.post('/add', [
     check('title').not().isEmpty().withMessage('Title cannot be empty'), 
     check('author').custom(function(value, {req}){
-        if(value !== session_helper.get_name()){
+        if(value !== session_helper.get_current_name()){
             throw new Error("Incorrect user");
         }else{
             return value;
@@ -47,14 +48,9 @@ router.post('/add', [
             errors: errors.mapped()
         });
      }else{
-        Article.create({
-            title: req.body.title,
-            author: req.body.author,
-            content: req.body.content,
-            created_at: new Date()
-        })
-        .then( (document) => {
-            req.flash('success','Article: ' + document.title + ' is added');
+        accountAPI.post(req.body.title, req.body.content)
+        .then( (message) => {
+            req.flash('success', message);
             res.redirect('/articles');
         })
         .catch( (err)=> {

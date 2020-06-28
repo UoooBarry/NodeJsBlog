@@ -4,6 +4,7 @@ var User = require('../models/user');
 var passwordHash = require('password-hash');
 const { check, validationResult } = require('express-validator');
 const session_helper = require('../helpers/session_helper');
+const accountAPI = require('../services/account');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -72,23 +73,20 @@ router.post('/signin',function(req,res){
     log_fail(req,res);
     return;
   }
-
-User.findOne({ name: name}, function(err, user){
-    if(!user){
-      log_fail(req,res);
-      return;
-    }
-    var hash = user.login.password;
-    if(passwordHash.verify(req.body.password,hash)){
-      session_helper.log_in(user);
-      req.flash('success', 'Login success.');
+  console.log(accountAPI.login(name, req.body.password));
+  accountAPI.login(name, req.body.password)
+     .then( (result) => {
+      if ( result === 'success' ){
+      req.flash('success', 'Sign in sucessful!');
       res.redirect('/articles');
     }else{
       log_fail(req,res);
       return;
     }
-  });
+  })
+  .catch( err=> console.log(err));
 
+  
 });
 
 router.get('/signout', function(req,res){

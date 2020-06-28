@@ -1,18 +1,23 @@
 var session = require('express-session');
 var User = require('../models/user');
+if (typeof localStorage === "undefined" || localStorage === null) {
+    var LocalStorage = require('node-localstorage').LocalStorage;
+    localStorage = new LocalStorage('./scratch');
+}
 
-exports.log_in = function (user){
-    session.current_user = user._id;
-    session.user_name = user.name;
+exports.log_in = function (name, token){
+    localStorage.setItem('authToken', token)
+    session.user_name = name;
 }
 
 exports.current_user = function(){
-    return session.current_user;
+    console.log(localStorage.getItem('authToken'));
+    return localStorage.getItem('authToken');
 }
 
 exports.log_out = function () {
-    session.current_user = null;
     session.user_name = null;
+    localStorage.clear();
 }
 
 exports.get_current_name = () => {
@@ -28,7 +33,7 @@ exports.get_name =  async (user_id) => {
 }
 
 exports.log_in_check = function (req,res) {
-    if(!session.current_user){
+    if(!session.user_name){
         req.flash('danger','Must sign in first.');
         res.redirect('/signin');
     }  
