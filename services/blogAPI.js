@@ -82,3 +82,31 @@ exports.del_article = async (id) => {
                     .catch(err => console.log(err));
     return result;
 }
+
+exports.register = async (name, gender, contact, password) => {
+    let result;
+    const headers = {
+        'Content-Type': 'application/json'
+    }
+    await request.post(uri + '/users/create', {
+        name: name,
+        gender: gender,
+        contact: contact,
+        password: password
+    },{'headers': headers})
+        .then(res => {
+            result = res.data.message;
+        })
+        .catch(err => console.log('register data err ' + res.data.message));
+    return result;
+}
+
+exports.get_user = async(name) => {
+    let result;
+    await request.get(uri + '/users/' + name)
+                    .then(res => {
+                        result = res.data.name;
+                    })
+                    .catch(err => console.log('get user err ' + err));
+    return result;
+}

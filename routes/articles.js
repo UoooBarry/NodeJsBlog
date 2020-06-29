@@ -1,4 +1,3 @@
-let Article = require('../models/article');
 var express = require('express');
 var router = express.Router();
 const { check,validationResult } = require('express-validator');
@@ -13,9 +12,7 @@ router.get('/',  function(req, res, next) {
                                 title:'Articles',
                                 articles: articles
                 });
-            });
-   
-        
+            }); 
 });
 
 router.get('/add', function(req, res, next){
