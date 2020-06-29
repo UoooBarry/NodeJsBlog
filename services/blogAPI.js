@@ -30,7 +30,7 @@ exports.login = async (name,password) => {
 
 exports.post = async (title, content) => {
     var message;
-    const headers = {
+     const headers = {
         'Content-Type': 'application/json',
         'Authorization': 'node ' + session_helper.current_user()
     }
@@ -47,4 +47,38 @@ exports.post = async (title, content) => {
     .catch(err => console.log(err));
 
     return message;
+}
+
+exports.get_articles = async () => {
+    let result;
+    await request.get(uri + '/articles')
+                    .then( res => {
+                        result = res.data.articles;
+                    })
+                    .catch( err=> console.log(err));
+    return result;
+}
+
+exports.get_article = async (id) => {
+    let result;
+    await request.get(uri + '/articles/' + id)
+                    .then( res => {
+                        result = res.data.article;
+                    })
+                    .catch(err => console.log(err));
+    return result;
+}
+
+exports.del_article = async (id) => {
+    let result;
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'node ' + session_helper.current_user()
+    }
+    await request.delete(uri + '/articles/' + id, {'headers': headers})
+                    .then( res => {
+                        result = res.data.message;
+                    })
+                    .catch(err => console.log(err));
+    return result;
 }

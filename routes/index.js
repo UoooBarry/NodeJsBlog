@@ -4,7 +4,7 @@ var User = require('../models/user');
 var passwordHash = require('password-hash');
 const { check, validationResult } = require('express-validator');
 const session_helper = require('../helpers/session_helper');
-const accountAPI = require('../services/account');
+const accountAPI = require('../services/blogAPI');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {

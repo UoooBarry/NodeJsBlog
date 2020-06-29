@@ -11,7 +11,6 @@ exports.log_in = function (name, token){
 }
 
 exports.current_user = function(){
-    console.log(localStorage.getItem('authToken'));
     return localStorage.getItem('authToken');
 }
 

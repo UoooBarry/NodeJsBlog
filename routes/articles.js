@@ -3,21 +3,19 @@ var express = require('express');
 var router = express.Router();
 const { check,validationResult } = require('express-validator');
 const session_helper = require('../helpers/session_helper');
-const accountAPI = require('../services/account');
+const blogAPI = require('../services/blogAPI');
 
 //Get articles
-router.get('/', function(req, res, next) {
-    Article.find({})
-        .exec()
-        .then( (articles)=>{
-        res.render('articles/index',{
-            title:'Articles',
-            articles: articles
-        })
-        .catch( (err) =>{
-            console.log(err);
-        })
-    });
+router.get('/',  function(req, res, next) {
+    blogAPI.get_articles()
+            .then( (articles) => {
+                res.render('articles/index',{
+                                title:'Articles',
+                                articles: articles
+                });
+            });
+   
+        
 });
 
 router.get('/add', function(req, res, next){
@@ -48,7 +46,7 @@ router.post('/add', [
             errors: errors.mapped()
         });
      }else{
-        accountAPI.post(req.body.title, req.body.content)
+        blogAPI.post(req.body.title, req.body.content)
         .then( (message) => {
             req.flash('success', message);
             res.redirect('/articles');
@@ -61,20 +59,32 @@ router.post('/add', [
 });
 
 router.delete('/:id/', function(req,res){
-    Article.findOneAndDelete({_id : req.params.id},function(err){
-        req.flash('success','Article removed');
-        res.send('Success');
-    })
+    blogAPI.del_article(req.params.id)
+            .then(result => {
+                if(result == 'success'){
+                    req.flash('success','Article removed');
+                    res.send('Success');
+                }else{
+                    req.flash('danger','Article error');
+                    res.send('error');
+                }
+            })
+            .catch(err => console.log(err));
 });
 
 router.get('/:article_id/', function(req,res){
-    Article.findById(req.params.article_id, function(err, article){
-        res.render('articles/show',{
-            title: "Article",
-            model: article
-        })
-    });
-    
+    blogAPI.get_article(req.params.article_id)
+            .then( article => {
+                res.render('articles/show',{
+                    title: "Article",
+                    model: article
+                })
+            })
+            .catch( err => {
+                req.flash('danger', 'Article not find!');
+                res.redirect('/articles');
+                console.log(err);
+            });
 });
 
 module.exports = router;
