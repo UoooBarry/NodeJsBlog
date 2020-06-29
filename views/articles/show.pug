@@ -4,8 +4,9 @@ block content
     div(class="jumbotron" style='margin-top: 20px;')
         h1 #{model.title}
         hr
-        p(class="article_author") #{model.author}
+        p(class="article_a author") #{model.author}
         span(class="article_timestamp_label") #{model.created_at}
-        a(class="article_author" href="#" data-id=model._id id="delete_article") delete
+        if model.author == session_helper.get_current_name()
+            a(class="article_a delete" href="#" data-id=model._id id="delete_article") Delete
         hr
         textarea(class="article_display" rows="10" readonly) #{model.content}

@@ -24,7 +24,11 @@ select {
   background-color: #d9d9d9 !important;
 }
 
-.article_author{
+.article_a{
+  padding-top: 11px;
+}
+
+.article_a.author{
     padding-top: 11px;
 }
 
@@ -40,6 +44,10 @@ select {
   resize:none;
   color: #fff;
   width: 100%;
+}
+
+.article_a.delete{
+  float: right;
 }
 
 footer {
