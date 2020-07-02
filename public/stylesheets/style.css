@@ -50,6 +50,11 @@ select {
   float: right;
 }
 
+.article_a.edit{
+  float: right;
+  padding-right: 5px;
+}
+
 footer {
   margin-left: 25px;
   left: 0;

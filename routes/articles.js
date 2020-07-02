@@ -84,4 +84,18 @@ router.get('/:article_id/', function(req,res){
             });
 });
 
+router.patch('/:article_id/', (req,res)=> {
+    blogAPI.update_content(req.params.article_id, req.body.content)
+            .then(result => {
+                if(result == 'success'){
+                    req.flash('success','Article updated');
+                    res.send('Success');
+                }else{
+                    req.flash('danger','Article error');
+                    res.send('error');
+                }
+            })
+            .catch(err => console.log(err));
+})
+
 module.exports = router;

@@ -30,15 +30,11 @@ exports.login = async (name,password) => {
 
 exports.post = async (title, content) => {
     var message;
-     const headers = {
-        'Content-Type': 'application/json',
-        'Authorization': 'node ' + session_helper.current_user()
-    }
     await request.post(uri + '/articles/post',{
         title: title,
         content: content
     }
-    ,{'headers': headers})
+    ,{'headers': get_header()})
     .then( (response) => {
         if(response.status !== '403'){
             message = response.data.message;
@@ -71,11 +67,7 @@ exports.get_article = async (id) => {
 
 exports.del_article = async (id) => {
     let result;
-    const headers = {
-        'Content-Type': 'application/json',
-        'Authorization': 'node ' + session_helper.current_user()
-    }
-    await request.delete(uri + '/articles/' + id, {'headers': headers})
+    await request.delete(uri + '/articles/' + id, {'headers': get_header()})
                     .then( res => {
                         result = res.data.message;
                     })
@@ -97,7 +89,7 @@ exports.register = async (name, gender, contact, password) => {
         .then(res => {
             result = res.data.message;
         })
-        .catch(err => console.log('register data err ' + res.data.message));
+        .catch(err => console.log('register data err ' + err));
     return result;
 }
 
@@ -109,4 +101,24 @@ exports.get_user = async(name) => {
                     })
                     .catch(err => console.log('get user err ' + err));
     return result;
+}
+
+exports.update_content = async(id, content) => {
+    let result;
+    await request.patch(uri + '/articles/' + id, {
+        content: content
+    },{'headers': get_header()})
+        .then(res => {
+            result = res.data.message
+        })
+        .catch(err => console.log('patch err ' + err));
+    return result;
+}
+
+function get_header(){
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'node ' + session_helper.current_user()
+    }
+    return headers;
 }
