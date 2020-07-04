@@ -8,5 +8,8 @@ block content
         span(class="article_timestamp_label") #{model.created_at}
         if model.author == session_helper.get_current_name()
             a(class="article_a delete" href="#" data-id=model._id id="delete_article") Delete
+            a(class="article_a edit" href="#" id="edit_article") Edit
         hr
-        textarea(class="article_display" rows="10" readonly) #{model.content}
+        textarea(id='article_content' class="article_display" rows="10" readonly) #{model.content}
+        div(class='submit_btn_group')
+            a(class="btn btn-primary" href="#" id="update_article" data-id=model._id style="display: none;") Update
