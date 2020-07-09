@@ -6,6 +6,8 @@ block content
         hr
         p(class="article_a author") #{model.author}
         span(class="article_timestamp_label") #{model.created_at}
+        p(style="float: right;")
+            span(class="badge badge-primary badge-pill") #{model.viewed}
         if model.author == session_helper.get_current_name()
             a(class="article_a delete" href="#" data-id=model._id id="delete_article") Delete
             a(class="article_a edit" href="#" id="edit_article") Edit

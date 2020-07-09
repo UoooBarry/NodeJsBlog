@@ -26,7 +26,10 @@ exports.get_articles = async () => {
                     .then( res => {
                         result = res.data.articles;
                     })
-                    .catch( err=> console.log(err));
+                    .catch( (err) => {
+                        console.log(err);
+                        throw "Article server is currently down";
+                    });
     return result;
 }
 

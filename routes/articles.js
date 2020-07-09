@@ -12,6 +12,10 @@ router.get('/',  function(req, res, next) {
                                 title:'Articles',
                                 articles: articles
                 });
+            })
+            .catch( (err) => {
+                req.flash('danger', err);
+                res.redirect('/');
             }); 
 });
 
@@ -66,7 +70,11 @@ router.delete('/:id/', function(req,res){
                     res.send('error');
                 }
             })
-            .catch(err => console.log(err));
+            .catch((err) => {
+                req.flash('danger','Server error');
+                res.send('error');
+                console.log(err);
+            });
 });
 
 router.get('/:article_id/', function(req,res){
